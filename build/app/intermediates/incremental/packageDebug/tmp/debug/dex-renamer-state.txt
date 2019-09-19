@@ -1,0 +1,4 @@
+#Thu Sep 19 14:31:10 CST 2019
+base.0=/Users/boxiaorui/Desktop/BGame/build/app/intermediates/transforms/dexMerger/debug/0
+path.0=classes.dex
+renamed.0=classes.dex
