@@ -1,111 +1,84 @@
+import 'package:bgame/pages/ActivityPages/activity_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
+  int _currentPage = 0;
+  //body的页面列表
+  List<Widget> _bodyList =[
+    ActivityPage(),
+    Center(child: Text("赛区"),),
+    Center(child: Text("入场券"),),
+    Center(child: Text("广场"),),
+    Center(child: Text("商城"),),
+  ];
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+      body: _bodyList[_currentPage],
+      //底部导航栏,至少需要三个
+      bottomNavigationBar: Theme(data: Theme.of(context).copyWith(
+        highlightColor: Colors.white,
+        splashColor: Colors.white
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
-        ),
+          child: BottomNavigationBar(
+              elevation: 0.5,
+              backgroundColor: Colors.white,
+              type: BottomNavigationBarType.fixed,
+              currentIndex: _currentPage,
+              onTap: (index){
+                _currentPage = index;
+                setState((){});
+              },
+              items: [
+                BottomNavigationBarItem(
+                  activeIcon: SvgPicture.asset("images/career_active.svg",width: 30,),
+                  icon: SvgPicture.asset("images/career.svg",width: 20),
+                  title: _currentPage == 0?Container():Text("生涯")
+                ),
+                BottomNavigationBarItem(
+                    activeIcon: SvgPicture.asset("images/activity_active.svg",width: 30),
+                    icon: SvgPicture.asset("images/activity.svg",width: 20),
+                    title: _currentPage == 1?Container():Text("赛区")
+                ),
+                BottomNavigationBarItem(
+                    activeIcon: SvgPicture.asset("images/ticket_active.svg",width: 30),
+                    icon: SvgPicture.asset("images/ticket.svg",width: 20),
+                    title: _currentPage == 2?Container():Text("入场券")
+                ),
+                BottomNavigationBarItem(
+                    activeIcon: SvgPicture.asset("images/community_active.svg",width: 30),
+                    icon: SvgPicture.asset("images/community.svg",width: 20),
+                    title: _currentPage == 3?Container():Text("广场")
+                ),
+                BottomNavigationBarItem(
+                    activeIcon: SvgPicture.asset("images/mall_active.svg",width: 30),
+                    icon: SvgPicture.asset("images/mall.svg",width: 20,fit: BoxFit.cover,),
+                    title: _currentPage == 4?Container():Text("商城")
+                )
+              ]
+          ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
